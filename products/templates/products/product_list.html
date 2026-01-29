@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1 class="mb-4">Магазин продуктов</h1>
+
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="mt-4">Доступные действия:</h4>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">
+                            <a href="/admin/" class="btn btn-primary btn-sm me-2">Админ-панель</a>
+                            Управление продуктами через админку
+                        </li>
+                        <li class="list-group-item">
+                            <a href="#" class="btn btn-secondary btn-sm me-2" onclick="alert('Сначала добавьте продукты через админку')">Список продуктов</a>
+                            (Будет доступно после добавления продуктов)
+                        </li>
+                        <li class="list-group-item">
+                            <a href="#" class="btn btn-secondary btn-sm me-2" onclick="alert('Нужно сначала создать продукты через админку')">Создать продукт</a>
+                            (Форма будет доступна позже)
+                        </li>
+                    </ul>
+
+                    <h4 class="mt-4">Статус системы:</h4>
+                    <div class="alert alert-success">
+                        ✅ Сервер запущен<br>
+                        ✅ База данных подключена<br>
+                        ✅ Шаблоны работают<br>
+                        ✅ Маршруты настроены
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">Быстрые команды</h5>
+                </div>
+                <div class="card-body">
+                    <p>Выполните в терминале:</p>
+                    <code>
+                        python manage.py migrate<br>
+                        python manage.py createsuperuser<br>
+                        python manage.py runserver
+                    </code>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,60 @@
+/* Стилизация форм */
+.form-control {
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    padding: 10px;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.form-control:focus {
+    border-color: #80bdff;
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+/* Специальные стили для полей */
+.description-field {
+    min-height: 120px;
+    resize: vertical;
+}
+
+.price-field {
+    max-width: 200px;
+}
+
+.image-field {
+    padding: 5px;
+}
+
+/* Сообщения об ошибках */
+.text-danger {
+    font-size: 0.875em;
+    margin-top: 5px;
+}
+
+.alert {
+    border-radius: 4px;
+    margin-bottom: 20px;
+}
+
+/* Кнопки */
+.btn {
+    border-radius: 4px;
+    padding: 8px 16px;
+    transition: background-color 0.3s;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+.btn-primary:hover {
+    background-color: #0069d9;
+    border-color: #0062cc;
+}
+
+.btn-secondary {
+    background-color: #6c757d;
+    border-color: #6c757d;
+}
