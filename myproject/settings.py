@@ -23,7 +23,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'products',  # ваше приложение
+    'products',
+    'users',
 ]
 
 MIDDLEWARE = [
@@ -44,7 +45,7 @@ TEMPLATES = [
         'DIRS': [
             BASE_DIR / 'templates',  # Добавляем корневую папку templates
         ],
-        'APP_DIRS': True,  # Разрешаем поиск в папках templates приложений
+        'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
@@ -97,3 +98,14 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Media files
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+
+
+AUTH_USER_MODEL = 'users.User'
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_HOST = 'smtp.yandex.ru'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'icaf93@mail.ru'
+EMAIL_HOST_PASSWORD = '12345'
+
