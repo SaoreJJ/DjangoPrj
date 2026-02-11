@@ -3,26 +3,19 @@ Django settings for myproject project.
 """
 import os
 from pathlib import Path
-import environ
+from dotenv import load_dotenv
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
+
+os.environ['PGCLIENTENCODING'] = 'WIN1251'
+load_dotenv(encoding='cp1251')
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Инициализация environ
-env = environ.Env()
+SECRET_KEY = os.getenv('SECRET_KEY')
 
-# Чтение .env файла (если есть)
-env_file = BASE_DIR / '.env'
-if env_file.exists():
-    environ.Env.read_env(str(env_file))
+DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = env('SECRET_KEY', default='django-insecure-development-key')
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
 
 # Application definition
 INSTALLED_APPS = [
@@ -67,17 +60,26 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'myproject.wsgi.application'
 
-
 DATABASES = {
-     'default': {
-         'ENGINE': 'django.db.backends.postgresql',
-         'NAME': 'testdb',
-         'USER': 'postgres',
-         'PASSWORD': 'simple123',
-        'HOST': 'localhost',
-         'PORT': '5432',
-     }
- }
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
+}
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': os.getenv('DB_NAME'),
+#         'USER': os.getenv('DB_USER'),
+#         'PASSWORD': os.getenv('DB_PASSWORD'),
+#         'HOST': os.getenv('DB_HOST'),
+#         'PORT': os.getenv('DB_PORT'),
+#         'OPTIONS': {
+#             'client_encoding': 'WIN1251',
+#         },
+#     }
+# }
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
@@ -113,3 +115,43 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
 AUTH_USER_MODEL = 'users.User'
+
+# Email
+EMAIL_BACKEND = os.getenv('EMAIL_BACKEND', 'django.core.mail.backends.console.EmailBackend')
+EMAIL_HOST = os.getenv('EMAIL_HOST')
+EMAIL_PORT = int(os.getenv('EMAIL_PORT', 587))
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
+EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS', 'False') == 'True'
+EMAIL_USE_SSL = os.getenv('EMAIL_USE_SSL', 'False') == 'True'
+DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL', 'noreply@example.com')
+
+from pprint import pprint
+
+
+#
+# # Формируем DSN вручную
+# dsn = "dbname={} user={} password={} host={} port={}".format(
+#     DATABASES['default']['NAME'],
+#     DATABASES['default']['USER'],
+#     DATABASES['default']['PASSWORD'],
+#     DATABASES['default']['HOST'],
+#     DATABASES['default']['PORT']
+# )
+# print("\n=== DSN (repr) ===")
+# print(repr(dsn))
+#
+# print("\n=== DSN в байтах (первые 100) ===")
+# dsn_bytes = dsn.encode('utf-8')
+# print(dsn_bytes[:100])
+#
+# print("\n=== Байт на позиции 61 ===")
+# if len(dsn_bytes) > 60:
+#     print(f"Позиция 61 (индекс 60): {dsn_bytes[60]} (hex: {hex(dsn_bytes[60])})")
+#     # Покажем контекст
+#     start = max(0, 55)
+#     end = min(len(dsn_bytes), 70)
+#     print(f"Контекст: {dsn_bytes[start:end]}")
+# else:
+#     print("DSN короче 61 байта, ошибка не отсюда?")
+# print("=" * 50)

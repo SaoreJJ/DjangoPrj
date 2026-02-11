@@ -59,6 +59,13 @@ class Catalog(models.Model):
         return reverse('products:catalog_detail', kwargs={'slug': self.slug})
 
 class Product(models.Model):
+    catalog = models.ForeignKey(
+        'Catalog',
+        on_delete=models.CASCADE,
+        related_name='products',
+        verbose_name='Каталог',
+        help_text='Выберите каталог'
+    )
     name = models.CharField(
         max_length=200,
         verbose_name='Название продукта',
