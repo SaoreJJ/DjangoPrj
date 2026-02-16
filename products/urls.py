@@ -18,4 +18,7 @@ urlpatterns = [
 
     # Удаление продукта
     path('<int:pk>/delete/', views.ProductDeleteView.as_view(), name='product_delete'),
+
+    # для отмены публикации
+    path('<int:pk>/unpublish/', views.ProductUnpublishView.as_view(), name='product_unpublish'),
 ]

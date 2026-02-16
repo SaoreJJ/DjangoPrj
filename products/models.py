@@ -4,6 +4,7 @@ from django.utils.text import slugify
 import os
 from django.db import models
 from django.urls import reverse
+from django.conf import settings
 
 class Catalog(models.Model):
     name = models.CharField(
@@ -43,9 +44,9 @@ class Catalog(models.Model):
     )
 
     class Meta:
-        verbose_name = 'Каталог'
-        verbose_name_plural = 'Каталоги'
-        ordering = ['name']
+        verbose_name = 'Продукт'
+        verbose_name_plural = 'Продукты'
+        ordering = ['-created_at']
         indexes = [
             models.Index(fields=['name']),
             models.Index(fields=['parent']),
@@ -107,11 +108,27 @@ class Product(models.Model):
         auto_now=True,
         verbose_name='Дата обновления'
     )
+    is_published = models.BooleanField(
+        default=False,
+        verbose_name='Опубликовано',
+        help_text='Отметьте, чтобы продукт был виден на сайте'
+    )
+    owner = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name='products',
+        verbose_name='Владелец',
+        null=True,          # разрешаем null для существующих записей
+        blank=True,
+    )
 
     class Meta:
         verbose_name = 'Продукт'
         verbose_name_plural = 'Продукты'
         ordering = ['-created_at']
+        permissions = [
+            ("can_unpublish_product", "Может отменять публикацию продукта"),
+        ]
         indexes = [
             models.Index(fields=['name']),
             models.Index(fields=['price']),
