@@ -7,6 +7,45 @@ from django.core.exceptions import PermissionDenied
 from django.views import View
 from django.shortcuts import get_object_or_404, redirect
 from django.contrib import messages
+from django.views.decorators.cache import cache_page
+from django.utils.decorators import method_decorator
+from django.conf import settings
+from django.views.generic import ListView
+from .models import Catalog
+from .services import get_products_by_category
+from .services import get_all_products
+
+
+class CategoryProductsView(ListView):
+    template_name = 'products/category_products.html'
+    context_object_name = 'products'
+    paginate_by = 10
+
+    def get_queryset(self):
+        self.category = get_object_or_404(
+            Catalog,
+            slug=self.kwargs['slug'],
+            is_active=True
+        )
+        return get_products_by_category(self.category.slug)
+
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['category'] = self.category
+        return context
+
+
+@method_decorator(cache_page(60 * 15), name='dispatch')  # кеш на 15 минут
+class ProductDetailView(LoginRequiredMixin, DetailView):
+    model = Product
+    template_name = "products/product_detail.html"
+    context_object_name = "product"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # Дополнительные данные, которые не кешируются
+        return context
 
 
 class ProductListView(ListView):
@@ -14,6 +53,9 @@ class ProductListView(ListView):
     template_name = "products/product_list.html"
     context_object_name = "products"
     paginate_by = 10
+
+    def get_queryset(self):
+        return get_all_products()
 
 
 class ProductDetailView(LoginRequiredMixin, DetailView):

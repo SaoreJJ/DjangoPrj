@@ -21,4 +21,7 @@ urlpatterns = [
 
     # для отмены публикации
     path('<int:pk>/unpublish/', views.ProductUnpublishView.as_view(), name='product_unpublish'),
+
+
+    path('category/<slug:slug>/', views.CategoryProductsView.as_view(), name='category_products'),
 ]

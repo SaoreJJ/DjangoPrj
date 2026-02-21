@@ -65,7 +65,9 @@ class Product(models.Model):
         on_delete=models.CASCADE,
         related_name='products',
         verbose_name='Каталог',
-        help_text='Выберите каталог'
+        help_text='Выберите каталог',
+        null=True,
+        blank=True,
     )
     name = models.CharField(
         max_length=200,

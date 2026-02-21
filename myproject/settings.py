@@ -60,26 +60,25 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'myproject.wsgi.application'
 
+#DATABASES = {
+#    'default': {
+#        'ENGINE': 'django.db.backends.sqlite3',
+#        'NAME': BASE_DIR / 'db.sqlite3',
+#    }
+#}
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': os.getenv('DB_NAME'),
-#         'USER': os.getenv('DB_USER'),
-#         'PASSWORD': os.getenv('DB_PASSWORD'),
-#         'HOST': os.getenv('DB_HOST'),
-#         'PORT': os.getenv('DB_PORT'),
-#         'OPTIONS': {
-#             'client_encoding': 'WIN1251',
-#         },
-#     }
-# }
+     'default': {
+         'ENGINE': 'django.db.backends.postgresql',
+         'NAME': os.getenv('DB_NAME'),
+         'USER': os.getenv('DB_USER'),
+         'PASSWORD': os.getenv('DB_PASSWORD'),
+         'HOST': os.getenv('DB_HOST'),
+         'PORT': os.getenv('DB_PORT'),
+         'OPTIONS': {
+             'client_encoding': 'WIN1251',
+         },
+     }
+  }
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
@@ -155,3 +154,21 @@ from pprint import pprint
 # else:
 #     print("DSN короче 61 байта, ошибка не отсюда?")
 # print("=" * 50)
+
+# Настройки Redis и кеширования
+REDIS_HOST = os.getenv('REDIS_HOST', 'localhost')
+REDIS_PORT = os.getenv('REDIS_PORT', 6379)
+REDIS_DB = os.getenv('REDIS_DB', 1)  # отдельная БД для кеша
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django_redis.cache.RedisCache',
+        'LOCATION': 'redis://127.0.0.1:6379/1',
+        'OPTIONS': {
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+        }
+    }
+}
+
+# Флаг для включения/отключения кеширования (удобно для разработки)
+CACHE_ENABLED = os.getenv('CACHE_ENABLED', 'True') == 'True'
