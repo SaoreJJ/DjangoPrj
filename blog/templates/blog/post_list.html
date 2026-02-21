@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block title %}Блог{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1 class="mb-4">Блог</h1>
+    <div class="row">
+        {% for post in posts %}
+            <div class="col-md-6 mb-4">
+                <div class="card h-100">
+                    {% if post.image %}
+                        <img src="{{ post.image.url }}" class="card-img-top" alt="{{ post.title }}" style="height: 200px; object-fit: cover;">
+                    {% endif %}
+                    <div class="card-body">
+                        <h5 class="card-title">{{ post.title }}</h5>
+                        <p class="card-text">{{ post.content|truncatechars:200 }}</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <small class="text-muted">
+                                {{ post.author.email }} | {{ post.created_at|date:"d.m.Y" }}
+                            </small>
+                            <a href="{{ post.get_absolute_url }}" class="btn btn-primary btn-sm">Читать</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <div class="col-12 text-center py-5">
+                <h3>Пока нет постов</h3>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
